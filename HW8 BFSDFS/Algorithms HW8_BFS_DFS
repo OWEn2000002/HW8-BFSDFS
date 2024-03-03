@@ -1,0 +1,75 @@
+Algorithms HW8 : BFS/ DFS
+
+Answer：
+Here are examples of applications for BFS and DFS, along with the algorithms in python and explanations:
+
+1、Breadth-First Search (BFS) Example: Shortest Path Finding
+
+1) [Algorithm]:
+
+	from collections import defaultdict, deque
+
+	class Graph:
+	    def __init__(self):                          # Initialize the graph using a defaultdict with list as default factory
+	        self.graph = defaultdict(list)
+
+	    def add_edge(self, u, v):                    # Add an edge between vertices u and v
+	        self.graph[u].append(v)
+
+	    def bfs_shortest_path(self, start, end):
+	        queue = deque([(start, [start])]).      # Initialize a queue with the start vertex and its path
+	        visited = set([start])                  # Initialize a set to store visited vertices
+
+	        while queue:
+	            current, path = queue.popleft()
+	            if current == end:
+	                return path                         # Return the shortest path if end vertex is reached
+	            for neighbor in self.graph[current]:
+	                if neighbor not in visited:
+	                    queue.append((neighbor, path + [neighbor]))   # Add the neighbor and its path to the queue and mark it as visited
+	                    visited.add(neighbor)
+
+2) [Explanation]:
+    BFS is an ideal choice for finding the shortest path in unweighted graphs. It explores all the neighboring nodes at the present depth before moving on to nodes at the next level. In the case of finding the shortest path, BFS ensures that the first time a node is visited, it is reached by the shortest path.
+
+3) [Efficiency for BFS]:
+    Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges.
+    Space Complexity: O(V), where V is the number of vertices.
+
+
+
+2、Depth-First Search (DFS) Example: Solving Mazes
+
+1) [Algorithm]:
+	class MazeSolver:
+	    def __init__(self, maze):
+	        # Initialize the maze and visited array to keep track of visited cells
+	        self.maze = maze
+	        self.visited = [[False for _ in range(len(maze[0]))] for _ in range(len(maze))]
+	        # Define the directions (right, down, left, up) to explore in the maze
+	        self.directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+
+	    def dfs_solve_maze(self, row, col):
+	        # Check if the current cell is out of bounds, a wall, or already visited
+	        if row < 0 or col < 0 or row >= len(self.maze) or col >= len(self.maze[0]) or self.maze[row][col] == 'W' or self.visited[row][col]:
+	            return False
+	        if self.maze[row][col] == 'G':   # Return true if goal is reached
+	            return True
+
+	        self.visited[row][col] = True.   # Mark the current cell as visited
+
+            # Explore all four directions recursively
+	        for dr, dc in self.directions:
+	            if self.dfs_solve_maze(row + dr, col + dc):
+	                return True.            # If any direction leads to the goal, return true
+
+	        return False
+
+
+2) [Explanation]:
+    DFS is well-suited for solving mazes because it exhaustively searches a path until it reaches the goal state or a dead-end. It explores as far as possible along each branch before backtracking.
+
+3) [Efficiency for DFS]:
+    Time Complexity: O(V + E),  where V is the number of vertices and E is the number of edges.
+    Space Complexity: O(V),  where V is the number of vertices. However, in practice, due to recursion, the space complexity can increase to O(V + H), where H is the maximum depth of the recursion stack.
+
